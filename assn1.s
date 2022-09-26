@@ -10,6 +10,7 @@ SECTION .TEXT
 main:
     push rbp
 
+    ; setting up args for printf
     mov rdi, fmt
     mov rsi, msg
     mov rax, 0
