@@ -1,6 +1,12 @@
-test.o: assn1.s
-	yasm assn1.s -f elf64 -o test.o
+a.out: test.o
+	gcc -no-pie test.o
 
-output: test.o
-	gcc -no-pie test.o -o output
+
+test.o: 2021541_A0.asm
+	yasm 2021541_A0.asm -f elf64 -o test.o
+
+all:
+	yasm 2021541_A0.asm -f elf64 -o test.o
+	gcc -no-pie test.o
+
 
