@@ -117,15 +117,18 @@ void shell(int signum)
 
             /* ECHO */
             else if (strcmp(args[0], "echo") == 0){
+                // printf("%s\n\n", args[1]);
                 if (arglen == 1){ // edge case 1
                     printf("\n");
 
                     // TODO
                 } else if (args[1][0] == '-'){
                     if (strlen(args[1]) == 2 && args[1][1] == 'n'){
-                        continue;
-                    } else if (strlen(args[1]) == 2 && strcmp(args[1], "--help")){
-                        continue;
+                        for (int i=1; i<arglen-1;i++){
+                            printf("%s ", args[i+1]);
+                        }
+                    } else if (strcmp(args[1], "--help ")){
+                        printf("Usage: echo [-n] [--help] [<string>/$ENV]\n");
                     }
                 } else if (args[1][0] == '$'){ // edge case 2
                     char env[strlen(args[1])];
@@ -145,14 +148,21 @@ void shell(int signum)
 
             /* PWD */
             else if (strcmp(args[0], "pwd") == 0){ // assumption - default is symbolic path
-                if (arglen == 1) printf("%s", cwd);
+                if (arglen == 1) printf("%s\n", cwd);
 
                 // TODO
                 else if (args[1][0] == '-'){
                     if (args[1][1] == 'L'){ // doesn't matter what is after this, handled error
-                        continue;
+                        printf("%s\n", cwd);
                     } else if (args[1][1] == 'P'){ // get real path
-                        continue;
+                        char buf[PATH_MAX];
+                        char *res = realpath(cwd, buf);
+                        if (res) { // or: if (res != NULL)
+                            printf("This source is at %s.\n", buf);
+                        } else {
+                            printf("Failed to find realpath.\n");
+                            continue;
+                        }
                     } else {
                         printf("Incorrect use of the command, pwd.\n"); // handled another edge case
                     }
@@ -198,7 +208,7 @@ void shell(int signum)
                     // printf("In parent, waiting for child.\n");
                     wait(NULL);
                 } else {
-                    printf("In child.\n");
+                    // printf("In child.\n");
                     char epath[PATH_MAX];
                     strcpy(epath, this_dir);
                     strcat(epath, "/ls"); // TODO - handle the case where len > PATH_MAX
@@ -285,7 +295,7 @@ void shell(int signum)
                     // printf("In parent, waiting for child.\n");
                     wait(NULL);
                 } else {
-                    printf("In child.\n");
+                    // printf("In child.\n");
                     char epath[PATH_MAX];
                     strcpy(epath, this_dir);
                     strcat(epath, "/cat"); // TODO - handle the case where len > PATH_MAX
