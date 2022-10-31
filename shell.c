@@ -32,6 +32,7 @@ static void trunc_end(char* s)
 
 
 
+
 int main(){
 	printf("Hello, World! Welcome to SeaShell\n");
     printf("Type 'exit' to exit SeaShell\n");
@@ -41,26 +42,6 @@ int main(){
 	return 0;
 }
 
-
-int main2() {
-    pid_t pid;
-
-    pid = fork();
-    printf ("My pid=%jd\n", (intmax_t) getpid ());
-    printf ("Parent's pid=%jd\n", (intmax_t) getppid ());
-    if (pid < 0) {
-        fprintf(stderr, "Error occurred while attempting to fork.");
-        return 1;
-    } else if (pid > 0) {
-        wait(NULL);
-        printf("Child complete.");
-    } else {
-        execlp("/bin/ls", "ls", NULL);
-
-    }
-
-    return 0;
-}
 
 void shell(int signum)
 {
@@ -185,10 +166,10 @@ void shell(int signum)
                     fprintf(stderr, "Error occurred while attempting to fork.\n");
                     exit(1);
                 } else if (pid > 0) {
-                    printf("In parent, waiting for child.\n");
+                    // printf("In parent, waiting for child.\n");
                     wait(NULL);
                 } else {
-                    printf("In child.\n");
+                    // printf("In child.\n");
                     char epath[PATH_MAX];
                     strcpy(epath, this_dir);
                     strcat(epath, "/date"); // TODO - handle the case where len > PATH_MAX
@@ -211,10 +192,10 @@ void shell(int signum)
             else if (strcmp(args[0], "ls") == 0){
                 pid = fork();
                 if (pid < 0) {
-                    fprintf(stderr, "Error occurred while attempting to fork.\n");
+                    // fprintf(stderr, "Error occurred while attempting to fork.\n");
                     exit(1);
                 } else if (pid > 0) {
-                    printf("In parent, waiting for child.\n");
+                    // printf("In parent, waiting for child.\n");
                     wait(NULL);
                 } else {
                     printf("In child.\n");
@@ -243,10 +224,10 @@ void shell(int signum)
                     fprintf(stderr, "Error occurred while attempting to fork.\n");
                     exit(1);
                 } else if (pid > 0) {
-                    printf("In parent, waiting for child.\n");
+                    // printf("In parent, waiting for child.\n");
                     wait(NULL);
                 } else {
-                    printf("In child.\n");
+                    // printf("In child.\n");
                     char epath[PATH_MAX];
                     strcpy(epath, this_dir);
                     strcat(epath, "/rm"); // TODO - handle the case where len > PATH_MAX
@@ -272,10 +253,10 @@ void shell(int signum)
                     fprintf(stderr, "Error occurred while attempting to fork.\n");
                     exit(1);
                 } else if (pid > 0) {
-                    printf("In parent, waiting for child.\n");
+                    // printf("In parent, waiting for child.\n");
                     wait(NULL);
                 } else {
-                    printf("In child.\n");
+                    // printf("In child.\n");
                     char epath[PATH_MAX];
                     strcpy(epath, this_dir);
                     strcat(epath, "/mkdir"); // TODO - handle the case where len > PATH_MAX
@@ -298,10 +279,10 @@ void shell(int signum)
             else if (strcmp(args[0], "cat") == 0){
                 pid = fork();
                 if (pid < 0) {
-                    fprintf(stderr, "Error occurred while attempting to fork.\n");
+                    // fprintf(stderr, "Error occurred while attempting to fork.\n");
                     exit(1);
                 } else if (pid > 0) {
-                    printf("In parent, waiting for child.\n");
+                    // printf("In parent, waiting for child.\n");
                     wait(NULL);
                 } else {
                     printf("In child.\n");
@@ -328,75 +309,4 @@ void shell(int signum)
             }
 
         } while (flag == 1);
-
-
-	// 	do
-	// 	{
-	// 		printf("$ ");
-
-	// 		scanf("%[^\n]%*c",command);
-
-	// 		removelastspace(command);
-
-	// 		int pipesCount=0;
-	// 		for(int i=0;i<strlen(command);i++){
-	// 			if(command[i]=='|'){
-	// 				pipesCount++;			
-	// 			}
-	// 		}
-	// 		//printf("Number of pipes : %d\n", pipesCount);
-
-	// 		char pipeCommands[pipesCount+1][100];
-	// 		int j=0,k=0;
-	// 		for(int i=0;i<strlen(command);i++){
-	// 			if(command[i]=='|'){
-	// 				pipeCommands[j][k-1]='\0';
-	// 				j++;
-	// 				k=0;									
-	// 			}
-	// 			else if(command[i]==' '){
-	// 				pipeCommands[j][k]='$';
-	// 				k++;			
-	// 			}
-	// 			else{
-	// 				pipeCommands[j][k]=command[i];
-	// 				k++;
-	
-	// 			}			
-	// 		}
-	// 		pipeCommands[j][k]='\0';
-
-	// 		for(int i=0; i<pipesCount+1;i++)			// Loop for each pipe sequence
-	// 		{
-	// 			//printf("Pipe command : %s\n", pipeCommands[i]);
-	// 			char *args[10];	
-	// 			int k=0;
-	// 			if(i==0){								// First command doesn't has starting symbol $
-	// 				args[0]=&pipeCommands[i][0];
-	// 				k++;
-	// 			}
-
-	// 			unsigned int size=strlen(pipeCommands[i]);
-	// 			for(int j=0;j<size;j++)
-	// 			{
-	// 				if(pipeCommands[i][j]=='$'){
-	// 						pipeCommands[i][j]='\0';
-	// 						args[k]=&pipeCommands[i][j+1];
-	// 						k++;			
-	// 				}
-	// 			}
-	// 			args[k]=NULL;
-
-	// 			if(strcmp(args[0], "exit")==0)
-	// 			{
-	// 				exit(0);
-	// 			}
-
-	// 			pipeSequence(args, pipesCount,k);
-	// 			zone++;
-	// 		}
-
-	// 		reset();	
-
-	// }while(flag==1);
 }

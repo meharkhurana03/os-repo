@@ -12,11 +12,15 @@
 
 int main(int argc, char *argv[]) {
     int status;
-    if(argc == 2)
+    if (argc == 1){
+        printf("Usage: rm [-vf] <path> ...\n");
+        return 0;
+    }
+    else if(argc == 2)
     {
         status = remove(argv[1]);
         if (status != 0){
-            printf("Could not remove '%s.'\n", argv[1]);
+            printf("Could not remove '%s'\n", argv[1]);
         }
         else {
             printf("Successful.\n");
@@ -28,10 +32,10 @@ int main(int argc, char *argv[]) {
             for (int i = 2; i < argc; i++){
                 status = remove(argv[i]);
                 if (status != 0){
-                    printf("Could not remove %s.\n", argv[i]);
+                    printf("Could not remove %s\n", argv[i]);
                 }
                 else {
-                    printf("Removed '%s'.\n", argv[i]);
+                    printf("Removed '%s'\n", argv[i]);
                 }
             }
             printf("Successful.\n");
@@ -55,7 +59,7 @@ int main(int argc, char *argv[]) {
                     continue;
                 }
                 else {
-                    printf("Removed '%s'.\n", argv[i]);
+                    printf("Removed '%s'\n", argv[i]);
                 }
             }
             printf("Successful.\n");
@@ -65,7 +69,7 @@ int main(int argc, char *argv[]) {
             for (int i = 1; i < argc; i++){
                 status = remove(argv[1]);
                 if (status != 0){
-                    printf("Could not remove '%s'.\n", argv[1]);
+                    printf("Could not remove '%s'\n", argv[1]);
                 }
                 else {
                     continue;
