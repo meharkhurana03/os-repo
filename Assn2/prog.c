@@ -8,9 +8,7 @@
 
 #define BILLION 1000000000L;
 
-double time_elapsed1;
-double time_elapsed2;
-double time_elapsed3;
+
 
 void countA() {
     unsigned int counter = 0;
@@ -52,6 +50,7 @@ void* thrA(void *arg){
     clock_gettime(CLOCK_REALTIME, &finish);
 
     *time_elapsed1 = (finish.tv_sec - start.tv_sec) + (double) (finish.tv_nsec - start.tv_nsec) / BILLION;
+    printf("Thread A\n");
     pthread_exit(NULL);
 }
 
@@ -65,6 +64,7 @@ void* thrB(void *arg){
     clock_gettime(CLOCK_REALTIME, &finish);
 
     *time_elapsed2 = (finish.tv_sec - start.tv_sec) + (double) (finish.tv_nsec - start.tv_nsec) / BILLION;
+    printf("Thread B\n");
     pthread_exit(NULL);
 }
 
@@ -78,6 +78,7 @@ void* thrC(void *arg){
     clock_gettime(CLOCK_REALTIME, &finish);
 
     *time_elapsed3 = (finish.tv_sec - start.tv_sec) + (double) (finish.tv_nsec - start.tv_nsec) / BILLION;
+    printf("Thread C\n");
     pthread_exit(NULL);
 }
 
@@ -89,6 +90,9 @@ int main(int argc, char *argv[]) {
     pthread_t threadB;
     pthread_t threadC;
 
+    double time_elapsed1;
+    double time_elapsed2;
+    double time_elapsed3;
     // struct sched_param pA;
     // struct sched_param pB;
     // struct sched_param pC;
@@ -106,7 +110,7 @@ int main(int argc, char *argv[]) {
     }
     struct sched_param pA;
     memset(&pA, 0, sizeof(struct sched_param));
-    pA.sched_priority = 0;
+    pA.sched_priority = 19;
 
     pthread_setschedparam(threadA, SCHED_OTHER, &pA);
 
@@ -116,7 +120,7 @@ int main(int argc, char *argv[]) {
 
     struct sched_param pB;
     memset(&pB, 0, sizeof(struct sched_param));
-    pB.sched_priority = 1;
+    pB.sched_priority = 99;
 
     pthread_setschedparam(threadB, SCHED_RR, &pB);
 
@@ -124,7 +128,7 @@ int main(int argc, char *argv[]) {
 
     struct sched_param pC;
     memset(&pC, 0, sizeof(struct sched_param));
-    pC.sched_priority = 10;
+    pC.sched_priority = 1;
 
     pthread_setschedparam(threadC, SCHED_FIFO, &pC);
 
