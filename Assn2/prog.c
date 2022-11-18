@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
     fprintf(stdout, "%u\n", pB.sched_priority);
     fprintf(stdout, "%u\n", pC.sched_priority);
     
-    FILE *fout = fopen("outputpart1.txt", "w");
+    FILE *fout = fopen("outputpart1.txt", "a");
 
     if (fout == NULL){
         printf("Error opening files.\n");
@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
     fprintf(fout, "%u\n", pB.sched_priority);
     fprintf(fout, "%u\n", pC.sched_priority);
 
-    
+	fclose(fout);
 
 
     
