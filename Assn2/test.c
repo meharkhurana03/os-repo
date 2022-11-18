@@ -5,6 +5,7 @@
 #include <pthread.h>
 #include <time.h>
 #include <sched.h>
+#include <stdbool.h>
 
 
 void* thrA(void *arg){
@@ -14,14 +15,7 @@ void* thrA(void *arg){
     return NULL;
 }
 
-int main() {
-    pthread_t p1, p2;
-    int rc;
-    printf("main: begin\n");
-    pthread_create(&p1, NULL, thrA, "A");
-    pthread_create(&p2, NULL, thrA, "B");
-    // join waits for the threads to finish
-    pthread_join(p1, NULL);
-    pthread_join(p2, NULL);
-    printf("main: end\n");
+int main(int argc, char *argv[]) {
+    bool x = (sizeof(atoi(argv[1])) == sizeof(int));
+    printf("%d\n", x);
 }
