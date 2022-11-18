@@ -101,6 +101,10 @@ int main(int argc, char *argv[]) {
     struct sched_param pB;
     struct sched_param pC;
 
+    memset(&pA, 0, sizeof(struct sched_param));
+    memset(&pB, 0, sizeof(struct sched_param));
+    memset(&pC, 0, sizeof(struct sched_param));
+
     if (argc < 2){
         pA.sched_priority = 0;
         pB.sched_priority = 1;
@@ -111,42 +115,37 @@ int main(int argc, char *argv[]) {
         pC.sched_priority = atoi(argv[3]);
     }
     
-    memset(&pA, 0, sizeof(struct sched_param));
+    
     // pA.sched_priority = 19;
 
-    pthread_setschedparam(threadA, SCHED_OTHER, &pA);
-
+    
+    
     pthread_create(&threadA, NULL, thrA, (void *)&time_elapsed1);
+    pthread_create(&threadB, NULL, thrB, (void *)&time_elapsed2);
+    pthread_create(&threadC, NULL, thrC, (void *)&time_elapsed3);
     // pthread_create(&threadB, NULL, thrB, "B");
     // pthread_create(&threadC, NULL, thrC, "C");
 
-    
-    memset(&pB, 0, sizeof(struct sched_param));
-    // pB.sched_priority = 99;
-
+    pthread_setschedparam(threadA, SCHED_OTHER, &pA);
     pthread_setschedparam(threadB, SCHED_RR, &pB);
-
-    pthread_create(&threadB, NULL, thrB, (void *)&time_elapsed2);
-
-    
-    memset(&pC, 0, sizeof(struct sched_param));
-    // pC.sched_priority = 1;
-
     pthread_setschedparam(threadC, SCHED_FIFO, &pC);
 
-    pthread_create(&threadC, NULL, thrC, (void *)&time_elapsed3);
 
-    
-    
+    // pB.sched_priority = 99;
+
+    // pC.sched_priority = 1;
 
     pthread_join(threadA, NULL);
-    pthread_join(threadC, NULL);
     pthread_join(threadB, NULL);
+    pthread_join(threadC, NULL);
 
 
     printf("Thread A: %lf\n", time_elapsed1);
     printf("Thread B: %lf\n", time_elapsed2);
     printf("Thread C: %lf\n", time_elapsed3);
+    fprintf(stdout, "%u\n", pA.sched_priority);
+    fprintf(stdout, "%u\n", pB.sched_priority);
+    fprintf(stdout, "%u\n", pC.sched_priority);
     
     FILE *fout = fopen("outputpart1.txt", "w");
 
@@ -158,9 +157,9 @@ int main(int argc, char *argv[]) {
     fprintf(fout, "%lf\n", time_elapsed1);
     fprintf(fout, "%lf\n", time_elapsed2);
     fprintf(fout, "%lf\n", time_elapsed3);
-    fprintf(fout, "%d\n", pA.sched_priority);
-    fprintf(fout, "%d\n", pB.sched_priority);
-    fprintf(fout, "%d\n", pC.sched_priority);
+    fprintf(fout, "%u\n", pA.sched_priority);
+    fprintf(fout, "%u\n", pB.sched_priority);
+    fprintf(fout, "%u\n", pC.sched_priority);
 
     
 
