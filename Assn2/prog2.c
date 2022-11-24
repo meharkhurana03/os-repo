@@ -69,12 +69,12 @@ void run_proc(pid_t pid, int proc, int priority, FILE *outf){
         pid_t pid = fork();
 
         parameter.sched_priority = priority;
-        sched_setscheduler(getpid(), SCHED_OTHER, parameter);
+        sched_setscheduler(getpid(), SCHED_OTHER, &parameter);
 
         clock_gettime(CLOCK_REALTIME, &start);
         if (pid == 0) {
             execl("/bin/sh", "sh", "/root/os-repo/Assn2/script1.sh", NULL);
-            
+
         }
         else if (pid < 0) {
             printf("Error in forking.\n");
@@ -94,7 +94,7 @@ void run_proc(pid_t pid, int proc, int priority, FILE *outf){
         pid_t pid = fork();
 
         parameter.sched_priority = priority;
-        sched_setscheduler(getpid(), SCHED_RR, parameter);
+        sched_setscheduler(getpid(), SCHED_RR, &parameter);
 
         clock_gettime(CLOCK_REALTIME, &start);
         if (pid == 0) {
@@ -121,7 +121,7 @@ void run_proc(pid_t pid, int proc, int priority, FILE *outf){
         pid_t pid = fork();
 
         parameter.sched_priority = priority;
-        sched_setscheduler(getpid(), SCHED_FIFO, parameter);
+        sched_setscheduler(getpid(), SCHED_FIFO, &parameter);
 
         clock_gettime(CLOCK_REALTIME, &start);
         if (pid == 0) {
