@@ -14,17 +14,19 @@ void run_proc(int proc, int priority, FILE* outf);
 int main(int argc, char *argv[]){
 
     pid_t pid1, pid2, pid3;
-    FILE *outf = fopen("result12.txt", "w");
+    FILE *outf = fopen("result12.txt", "a");
     
     int priority1, priority2, priority3;
     if (argc == 4) {
         priority1 = atoi(argv[1]);
         priority2 = atoi(argv[2]);
         priority3 = atoi(argv[3]);
+        fprintf(outf, "%d %d %d\n", priority1, priority2, priority3);
     } else {
         priority1 = 0;
         priority2 = 1;
         priority3 = 1;
+        fprintf(outf, "%d %d %d\n", priority1, priority2, priority3);
     }
 
     pid1 = fork();
