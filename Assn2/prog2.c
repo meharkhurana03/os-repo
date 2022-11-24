@@ -9,7 +9,7 @@
 
 #define BIL 1000000000L;
 
-void run_proc(pid_t pid, int proc, int priority, FILE* outf);
+void run_proc(int proc, int priority, FILE* outf);
 
 int main(int argc, char *argv[]){
 
@@ -17,7 +17,7 @@ int main(int argc, char *argv[]){
     FILE *outf = fopen("result12.txt", "w");
     
     int priority1, priority2, priority3;
-    if (argc == 1) {
+    if (argc == 4) {
         priority1 = atoi(argv[1]);
         priority2 = atoi(argv[2]);
         priority3 = atoi(argv[3]);
@@ -32,7 +32,7 @@ int main(int argc, char *argv[]){
     if (pid1 == 0) {
         // PROCESS 1 - SCHED_OTHER
         printf("inside first fork.");
-        run_proc(pid1, 1, priority1, outf);
+        run_proc(1, priority1, outf);
 
     } else if (pid1 < 0){
         printf("Error in forking 1.");
@@ -41,12 +41,14 @@ int main(int argc, char *argv[]){
         pid2 = fork();
         if (pid2 == 0) {
             printf("inside second fork.");
+            run_proc(2, priority2, outf);
         } else if (pid2 < 0) {
             printf("Error in forking 2.");
         } else {
             pid3 = fork();
             if (pid3 == 0) {
                 printf("inside third fork.");
+                run_proc(3, priority3, outf);
             } else if (pid3 < 0) {
                 printf("Error in forking 3.");
             }
@@ -60,7 +62,7 @@ int main(int argc, char *argv[]){
 }
 
 
-void run_proc(pid_t pid, int proc, int priority, FILE *outf){
+void run_proc(int proc, int priority, FILE *outf){
     struct timespec start, finish;
     struct sched_param parameter;
     double time_elapsed = 0.0;
@@ -138,8 +140,8 @@ void run_proc(pid_t pid, int proc, int priority, FILE *outf){
             clock_gettime(CLOCK_REALTIME, &finish);
             time_elapsed = (finish.tv_sec - start.tv_sec) + (double) (finish.tv_nsec - start.tv_nsec) / BIL;
 
-            printf("Time for SCHED_RR: %lf\n", time_elapsed);
-            fprintf(outf,"B %lf\n", time_elapsed);
+            printf("Time for SCHED_FIFO: %lf\n", time_elapsed);
+            fprintf(outf,"C %lf\n", time_elapsed);
         }
     }
 }
