@@ -4,8 +4,9 @@
 #include <errno.h>
 #include <linux/kernel.h>
 
-
 #define TWOD_MEMCPY_SYSCALL 451
+
+
 
 int main()
 {
@@ -17,7 +18,7 @@ int main()
 
     if (sys_call_status != EFAULT)
     {
-        printf("SYSCALL 451 kernel_2d_memcpy invoked successfully.\n");
+        printf("\nkernel_2d_memcpy invoked successfully.\n\n");
         
         printf("Array sent:\n");
         for (int i=0; i<5; i++) {
@@ -26,6 +27,7 @@ int main()
             }
             printf("\n");
         }
+        printf("\n");
 
         printf("Array received:\n");
         for(int i=0; i<5; i++){
