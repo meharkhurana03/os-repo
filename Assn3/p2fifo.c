@@ -23,34 +23,37 @@ int main() {
 
     int i = 0;
 
-    sleep(1);
-    printf("hello from p2\n");
+    // printf("hello from p2\n");
+    sleep(0.1);
 
     while (1) {
-
+        fd_read = open(FIFONAME1, O_RDONLY);
         while (i < max_id_received + 5) {
-            fd_read = open(FIFONAME1, O_RDONLY);
             int response = read(fd_read, buf, BUFFERSIZE);
-            close(fd_read);
+            
 
             if (response < 0) {
                 perror("Problem reading from reading FIFO in P2");
                 exit(1);
             }
 
-            i = buf[0];
+            i++;
+        }
+        close(fd_read);
 
-            printf("String received in P2 : ");
-            for (int j = 0; j<9; j++) {
-                printf("%c", buf[j]);
-            }
+        for (int i = 1; i < 42; i +=10) {
+            printf("[P2] : ");
+            printf("%d ", buf[i-1]);
+            printf("%s", buf+i);
             printf("\n");
 
-            printf("ID received in P2 : %d", buf[0]);
+            
+
+            
         }
 
         max_id_received = i;
-        sprintf(buf, "%d", max_id_received);
+        buf[0] = max_id_received;
         fd_write = open(FIFONAME2, O_WRONLY);
         int response = write(fd_write, buf, BUFFERSIZE);
         close(fd_write);
