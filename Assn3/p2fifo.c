@@ -5,67 +5,90 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <time.h>
 
 
-#define BUFFERSIZE 200
+#define BUFFERSIZE 50
 #define FIFONAME1 "myFIFO1"
-#define FIFONAME2 "myFIFO2"
-
 
 int main() {
     char buf[BUFFERSIZE];
 
-    int fd_write, fd_read;
+    int n;
+    
     mkfifo(FIFONAME1, 0666);
-    mkfifo(FIFONAME2, 0666);
 
-    int max_id_received = 0;
+    
+    int response;
+    int index = 0;
+    int fd;
+    int this;
 
-    int i = 0;
+    // while (index < 50) {
 
-    // printf("hello from p2\n");
-    sleep(0.1);
+    //     fd_write = open(FIFONAME1, O_WRONLY);
+    //     if (fd_write == -1) {
+    //         perror("Problem in opening writing FIFO in P1.");
+    //         exit(1);
+    //     }
 
-    while (1) {
-        fd_read = open(FIFONAME1, O_RDONLY);
-        while (i < max_id_received + 5) {
-            int response = read(fd_read, buf, BUFFERSIZE);
-            
+    //     for (int i = index; i < index+4; i++) {
+    //         write(fd_write, str[i], strlen(str[i]));
+    //     }
+    //     close(fd_write);
 
-            if (response < 0) {
-                perror("Problem reading from reading FIFO in P2");
-                exit(1);
+
+    //     fd_read = open(FIFONAME2, O_RDONLY);
+    //     char ch_id_received[4];
+    //     int response2 = read(fd_read, ch_id_received, 4);
+
+    //     if (response2 == -1) {
+    //         perror("Problem in reading from reading FIFO in P1.");
+    //         exit(1);
+    //     }
+
+    //     int max_id_received = ch_id_received[0];
+    //     printf("Max ID received by P2 : %d\n", max_id_received);
+    //     index++;
+    //     close(fd_read);
+    // }
+
+    while(1) {
+        fd = open(FIFONAME1, O_RDONLY);
+
+        read(fd, buf, 50);
+
+        for(int i = 0; i < 5; i++) {
+            this = buf[i*10];
+            printf("P2 %d  : ", this);
+            for (int j = 0; j < 8; j++) {
+                printf("%c", buf[i*10 + j]);
             }
-
-            i++;
-        }
-        close(fd_read);
-
-        for (int i = 1; i < 42; i +=10) {
-            printf("[P2] : ");
-            printf("%d ", buf[i-1]);
-            printf("%s", buf+i);
             printf("\n");
-
-            
-
-            
         }
 
-        max_id_received = i;
-        buf[0] = max_id_received;
-        fd_write = open(FIFONAME2, O_WRONLY);
-        int response = write(fd_write, buf, BUFFERSIZE);
-        close(fd_write);
-        if (response < 0) {
-            perror("Problem writing to FIFO in P2");
+        close(fd);
+
+        fd = open(FIFONAME1, O_WRONLY);
+
+        for (int i = 0; i < 5; i++) {
+            if (buf[i*10] > index) {
+                index = buf[i*10];
+            }
+        }
+        char out[50];
+        memset(out, 50, sizeof(char));
+        out[0] = index;
+
+        write(fd, out, 50);
+
+        // printf("Max index received by P2: %d\n", index);
+
+        close(fd);
+
+        if (index >= 50) {
             exit(1);
         }
-
-        if (max_id_received >= 50) {
-            exit(0);
-        }
     }
-
 
 }
