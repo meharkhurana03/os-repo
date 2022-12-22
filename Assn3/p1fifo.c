@@ -8,7 +8,7 @@
 #include <time.h>
 
 
-#define BUFFERSIZE 10
+#define BUFFERSIZE 200
 #define FIFONAME1 "myFIFO1"
 #define FIFONAME2 "myFIFO2"
 #define BIL 1000000000;
@@ -65,11 +65,13 @@ int main() {
     int response;
     int min_id = 0;
     while(1) {
-        for(int i = 0; i < 5; i++) {
-            fd_write = open(FIFONAME1, O_WRONLY);
-            write(fd_write, str[min_id], 10);
-            close(fd_write);
-        }
+        fd_write = open(FIFONAME1, O_WRONLY);
+        write(fd_write, str[min_id], 10);
+        write(fd_write, str[min_id + 1], 10);
+        write(fd_write, str[min_id + 2], 10);
+        write(fd_write, str[min_id + 3], 10);
+        write(fd_write, str[min_id + 4], 10);
+        close(fd_write);
 
         // for(int i = min_id; i<min_id + 5; i++){
         //     fd_write = open(FIFONAME1, O_WRONLY);
