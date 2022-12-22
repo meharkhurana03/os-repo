@@ -9,6 +9,7 @@
 
 #define MEMSIZE 40*sizeof(char)
 // #define MEM2SIZE 2*sizeof(int)
+#define BIL 1000000000;
 
 int main() {
     struct timespec t_begin, t_end;

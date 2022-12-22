@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #define SNAME "socket"
+#define BIL 1000000000;
 
 int main() {
     int s;
