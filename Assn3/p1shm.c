@@ -11,6 +11,8 @@
 // #define MEM2SIZE 2*sizeof(int)
 
 int main() {
+    struct timespec t_begin, t_end;
+
     char str[50][10];
     for (int i = 0; i < 50; i++) {
         str[i][0] = i + 1;
@@ -25,7 +27,7 @@ int main() {
     
     
     
-    
+    clock_gettime(CLOCK_REALTIME, &t_begin);
 
     int max_recd = 0;
     while (1) {
@@ -63,7 +65,9 @@ int main() {
 
 
         if (max_recd >= 50) {
-            printf("Time taken:");
+            clock_gettime(CLOCK_REALTIME, &t_end);
+            double time = (double) (t_end.tv_sec - t_begin.tv_sec) + (t_end.tv_nsec - t_begin.tv_nsec) / (double) BIL;
+            printf("Time taken : %f\n", time);
             shm_unlink("shm");
             exit(0);
         }

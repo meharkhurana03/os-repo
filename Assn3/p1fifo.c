@@ -23,7 +23,7 @@ int main() {
 
     char str[50][10];
     for (int i = 0; i < 50; i++) {
-        str[i][0] = i + ;
+        str[i][0] = i + 1;
     }
     for (int i = 0; i < 50; i++) {
 		for (int j = 1; j < 9; j++) {
