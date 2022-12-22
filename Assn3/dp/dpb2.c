@@ -26,8 +26,9 @@ void *phil(void *arg) {
     while (1) {
         if (id == 4) {
             thinking(id);
-            sem_wait(&forks[ (id + 1) % 5 ]);
+            
             sem_wait(&forks[ id ]);
+            sem_wait(&forks[ (id + 1) % 5 ]);
             sem_wait(&bowl);
 
             eating(id);
