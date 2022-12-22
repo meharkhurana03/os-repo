@@ -4,6 +4,7 @@
 #include <linux/moduleparam.h>
 #include <linux/pid.h>
 #include <linux/sched.h>
+#include <linux/sched/signal.h>
 
 MODULE_LICENSE("GPL");
 MODULE_DESCRIPTION("Module to get info of a pid"); 
