@@ -7,7 +7,7 @@
 #include <fcntl.h>
 
 
-#define BUFFERSIZE 200
+#define BUFFERSIZE 10
 #define FIFONAME1 "myFIFO1"
 #define FIFONAME2 "myFIFO2"
 
@@ -27,8 +27,9 @@ int main() {
     sleep(0.1);
 
     while (1) {
-        fd_read = open(FIFONAME1, O_RDONLY);
+        
         while (i < max_id_received + 5) {
+            fd_read = open(FIFONAME1, O_RDONLY);
             int response = read(fd_read, buf, BUFFERSIZE);
             
 
@@ -36,21 +37,14 @@ int main() {
                 perror("Problem reading from reading FIFO in P2");
                 exit(1);
             }
-
-            i++;
-        }
-        close(fd_read);
-
-        for (int i = 1; i < 42; i +=10) {
             printf("[P2] : ");
-            printf("%d ", buf[i-1]);
-            printf("%s", buf+i);
+            printf("%d ", buf[0]);
+            printf("%s", buf+1);
             printf("\n");
 
-            
-
-            
+            close(fd_read);
         }
+        
 
         max_id_received = i;
         buf[0] = max_id_received;
