@@ -7,7 +7,7 @@
 #include <string.h>
 
 
-#define MEMSIZE 40*sizeof(char)
+#define MEMSIZE 50*sizeof(char)
 // #define MEM2SIZE 2*sizeof(int)
 
 int main() {
@@ -26,10 +26,15 @@ int main() {
     
     
     
-
+    int iter = 0;
     int max_recd = 0;
     while (1) {
+        printf("%d\n", max_recd);
+        if (iter == 0) {
+            sleep(1);
+        }
         for (int i = max_recd; i < max_recd + 5; i++) {
+            
             int fd = shm_open("/shm", O_WRONLY | O_CREAT, 0666);
             
             if (fd < 0) {
@@ -67,6 +72,6 @@ int main() {
             shm_unlink("shm");
             exit(0);
         }
-
+        iter++;
     }
 }

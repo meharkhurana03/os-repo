@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 
-#define MEMSIZE 40*sizeof(char)
+#define MEMSIZE 50*sizeof(char)
 // #define MEM2SIZE 2*sizeof(int)
 
 int main() {
